@@ -11,4 +11,5 @@ public class JobTrackerContext : DbContext
     }
 
     public DbSet<JobOffer> JobOffers { get; set; }
+    public DbSet<SalaryRange> SalaryRanges { get; set; }    
 }

@@ -1,4 +1,6 @@
 using JobTracker.Db;
+using JobTracker.Interfaces;
+using JobTracker.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +12,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<JobTrackerContext>(options =>
 {
-    options.UseSqlite(builder.Configuration.GetConnectionString("DeafultConnection"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddTransient<IJobOffersRepository, JobOffersRepository>(); 
 
 var app = builder.Build();
 
