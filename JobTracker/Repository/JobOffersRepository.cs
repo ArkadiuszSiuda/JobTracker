@@ -36,7 +36,6 @@ public class JobOffersRepository : IJobOffersRepository
 
     public async Task UpdateJobOffer(JobOffer jobOffer)
     {
-        var dbJobOffer = await _context.JobOffers.FirstOrDefaultAsync(i => i.Id == jobOffer.Id);
         _context.Update(jobOffer);
         await _context.SaveChangesAsync();
     }
