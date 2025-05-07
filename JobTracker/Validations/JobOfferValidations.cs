@@ -13,9 +13,6 @@ public class JobOfferValidations : AbstractValidator<JobOffer>
         RuleFor(x => x.Position)
              .NotEmpty()
              .WithMessage("Position is required.");
-        RuleFor(x => x.Status)
-             .NotEmpty()
-             .WithMessage("Status is required.");
         RuleFor(x => x.SalaryRange)
              .Null()
              .WithMessage("Salary range is not supported yet.");
