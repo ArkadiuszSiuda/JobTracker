@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using JobTracker.Entities;
+using System.Runtime.CompilerServices;
 
 namespace JobTracker.Validations;
 
@@ -9,26 +10,33 @@ public class JobOfferValidations : AbstractValidator<JobOffer>
     {
         RuleFor(x => x.CompanyName)
              .NotEmpty()
-             .WithMessage("Company name is required.");
+             .WithMessage(JobOfferErrors.CompanyNameRequiredMessage);
         RuleFor(x => x.Position)
-             .NotEmpty()
-             .WithMessage("Position is required.");
+             .NotNull()
+             .WithMessage(JobOfferErrors.PositionRequiredMessage);
         RuleFor(x => x.SalaryRange)
-             .Null()
-             .WithMessage("Salary range is not supported yet.");
+            .Must(x => SalaryRangeValidatr(x))
+            .WithMessage(JobOfferErrors.SalaryRangeErrorMessage);
         RuleFor(x => x.Note)
              .Length(0, 100)
-             .WithMessage("Note must be less than 500 characters.");
+             .WithMessage(JobOfferErrors.NoteLengthErrorMessage);
         RuleFor(x => x.Link)
              .NotEmpty()
-             .WithMessage("Link is required.")
+             .WithMessage(JobOfferErrors.LinkRequiredMessage)
              .Must(link => Uri.IsWellFormedUriString(link, UriKind.Absolute))
-             .WithMessage("Link must be a valid URL.");
+             .WithMessage(JobOfferErrors.LinkInvalidMessage);
         RuleFor(x => x.SubmissionDate)
-             .Must(date => date != default(DateTime));
+             .Must(date => date != default)
+             .WithMessage(JobOfferErrors.SubmissionDateErrorMessage);
         RuleFor(x => x.Status)
-             .Null()
-             .WithMessage("Status is not supported yet.");
+             .NotNull()
+             .WithMessage(JobOfferErrors.StatusRequiredMessage);
 
+
+    }
+    
+    private static bool SalaryRangeValidatr(SalaryRange salaryRange)
+    {
+        return salaryRange.Min > 0 && salaryRange.Max > 0 && salaryRange.Min < salaryRange.Max;
     }
 }

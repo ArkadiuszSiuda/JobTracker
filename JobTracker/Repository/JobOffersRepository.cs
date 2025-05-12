@@ -36,7 +36,18 @@ public class JobOffersRepository : IJobOffersRepository
 
     public async Task UpdateJobOffer(JobOffer jobOffer)
     {
-        _context.Update(jobOffer);
+        var dbJobOffer = await _context.JobOffers.FirstOrDefaultAsync(i => i.Id == jobOffer.Id);
+        if (dbJobOffer == null)
+        {
+            throw new Exception($"Job offer with id {jobOffer.Id} does not exist");
+        }
+        dbJobOffer.CompanyName = jobOffer.CompanyName;
+        dbJobOffer.Position = jobOffer.Position;
+        dbJobOffer.SalaryRange = jobOffer.SalaryRange;
+        dbJobOffer.Note = jobOffer.Note;
+        dbJobOffer.Link = jobOffer.Link;
+        dbJobOffer.SubmissionDate = jobOffer.SubmissionDate;
+        dbJobOffer.Status = jobOffer.Status;
         await _context.SaveChangesAsync();
     }
 
