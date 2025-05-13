@@ -28,5 +28,4 @@ public class JobTrackerContext : DbContext
 
         base.OnModelCreating(modelBuilder);
     }
-    ss
 }
