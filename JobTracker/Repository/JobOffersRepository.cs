@@ -34,12 +34,12 @@ public class JobOffersRepository : IJobOffersRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateJobOffer(JobOffer jobOffer)
+    public async Task<bool> UpdateJobOffer(JobOffer jobOffer)
     {
         var dbJobOffer = await _context.JobOffers.FirstOrDefaultAsync(i => i.Id == jobOffer.Id);
         if (dbJobOffer == null)
         {
-            throw new Exception($"Job offer with id {jobOffer.Id} does not exist");
+            return false;
         }
         dbJobOffer.CompanyName = jobOffer.CompanyName;
         dbJobOffer.Position = jobOffer.Position;
@@ -49,6 +49,7 @@ public class JobOffersRepository : IJobOffersRepository
         dbJobOffer.SubmissionDate = jobOffer.SubmissionDate;
         dbJobOffer.Status = jobOffer.Status;
         await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task DeleteJobOffer(int id)

@@ -38,8 +38,8 @@ namespace JobTracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("SalaryRangeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("SalaryRange")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
@@ -49,35 +49,7 @@ namespace JobTracker.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SalaryRangeId");
-
                     b.ToTable("JobOffers");
-                });
-
-            modelBuilder.Entity("JobTracker.Entities.SalaryRange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Max")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Min")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SalaryRanges");
-                });
-
-            modelBuilder.Entity("JobTracker.Entities.JobOffer", b =>
-                {
-                    b.HasOne("JobTracker.Entities.SalaryRange", "SalaryRange")
-                        .WithMany()
-                        .HasForeignKey("SalaryRangeId");
-
-                    b.Navigation("SalaryRange");
                 });
 #pragma warning restore 612, 618
         }
