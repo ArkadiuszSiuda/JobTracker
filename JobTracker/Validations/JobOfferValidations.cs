@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using JobTracker.Entities;
-using System.Runtime.CompilerServices;
 
 namespace JobTracker.Validations;
 
@@ -10,27 +9,27 @@ public class JobOfferValidations : AbstractValidator<JobOffer>
     {
         RuleFor(x => x.CompanyName)
              .NotEmpty()
-             .WithMessage(JobOfferErrors.CompanyNameRequiredMessage);
+             .WithMessage("Company name cannot be null or empty.");
         RuleFor(x => x.Position)
              .NotNull()
-             .WithMessage(JobOfferErrors.PositionRequiredMessage);
+             .WithMessage("Position cannot be null or empty.");
         RuleFor(x => x.SalaryRange)
             .Must(x => SalaryRangeValidatr(x))
-            .WithMessage(JobOfferErrors.SalaryRangeErrorMessage);
+            .WithMessage("Salary maximum value cannot be lower than minimum value");
         RuleFor(x => x.Note)
              .Length(0, 100)
-             .WithMessage(JobOfferErrors.NoteLengthErrorMessage);
+             .WithMessage("Note must be less than 100 characters.");
         RuleFor(x => x.Link)
              .NotEmpty()
-             .WithMessage(JobOfferErrors.LinkRequiredMessage)
+             .WithMessage("Link cannot be null or empty.")
              .Must(link => Uri.IsWellFormedUriString(link, UriKind.Absolute))
-             .WithMessage(JobOfferErrors.LinkInvalidMessage);
+             .WithMessage("Link must be a valid URL.");
         RuleFor(x => x.SubmissionDate)
              .Must(date => date != default)
-             .WithMessage(JobOfferErrors.SubmissionDateErrorMessage);
+             .WithMessage("Submission date cannot be default value.");
         RuleFor(x => x.Status)
              .NotNull()
-             .WithMessage(JobOfferErrors.StatusRequiredMessage);
+             .WithMessage("Status cannot be null or empty.");
 
 
     }
