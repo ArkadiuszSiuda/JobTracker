@@ -1,7 +1,6 @@
 using FluentValidation;
 using JobTracker.Entities;
 using JobTracker.Interfaces;
-using JobTracker.Validations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobTracker.Controllers

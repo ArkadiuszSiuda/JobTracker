@@ -25,6 +25,11 @@ public class JobOfferValidations : AbstractValidator<JobOffer>
     
     private static bool SalaryRangeValidatr(SalaryRange salaryRange)
     {
+        if (salaryRange is null)
+        {
+            return true;
+        }
+            
         return salaryRange.Min > 0 && salaryRange.Max > 0 && salaryRange.Min < salaryRange.Max;
     }
 }

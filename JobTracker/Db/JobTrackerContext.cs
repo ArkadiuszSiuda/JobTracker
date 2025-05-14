@@ -16,16 +16,7 @@ public class JobTrackerContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var options = new JsonSerializerOptions();
-        var converter = new ValueConverter<SalaryRange, string>(
-            v => JsonSerializer.Serialize(v, options),
-            v => JsonSerializer.Deserialize<SalaryRange>(v, options));
-
         modelBuilder.Entity<JobOffer>()
-            .Property(e => e.SalaryRange)
-            .HasConversion(converter)
-            .HasColumnType("TEXT");
-
-        base.OnModelCreating(modelBuilder);
+            .OwnsOne(s => s.SalaryRange);
     }
 }
