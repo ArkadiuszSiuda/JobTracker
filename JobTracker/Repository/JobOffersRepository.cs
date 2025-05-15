@@ -14,6 +14,11 @@ public class JobOffersRepository : IJobOffersRepository
         _context = context;
     }
 
+    public JobOffersRepository()
+    {
+       
+    }
+
     public async Task<IList<JobOffer>> GetJobOffers()
     {
         var dbJobOffers = await _context.JobOffers.ToListAsync();

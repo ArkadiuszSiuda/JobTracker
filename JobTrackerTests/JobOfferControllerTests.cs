@@ -1,27 +1,37 @@
+using Bogus;
 using FluentValidation;
 using JobTracker.Controllers;
 using JobTracker.Entities;
-using JobTracker.Repository;
+using JobTracker.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 
 namespace JobTrackerTests;
 
 public class JobOfferControllerTests
 {
-    private JobOffersRepository _jobsOfferRepository;
-    private readonly IValidator<JobOffer> _validator;
+    private IJobOffersRepository _jobsOfferRepository;
+    private IValidator<JobOffer> _validator;
 
     public JobOfferControllerTests()
     {
-        _jobsOfferRepository = Substitute.For<JobOffersRepository>();
+        _jobsOfferRepository = Substitute.For<IJobOffersRepository>();
         _validator = new InlineValidator<JobOffer>();
     }
 
     [Fact]
-    public void GetJobOffersReturnsCorrectNumberOfOffers()
+    public async void GetJobOffersReturnsCorrectNumberOfOffers()
     {
-        var fakeJobOffers = new DataGenerator().GenerateJobOffer(5);
-
         var controller = new JobOfferController(_jobsOfferRepository, _validator);
+
+        var jobOffers = new DataGenerator().GenerateJobOffer(5);
+
+        _jobsOfferRepository.GetJobOffers().Returns(jobOffers);
+
+        var actionResult = await controller.GetJobOffers();
+
+        var result = actionResult as OkObjectResult;
+
+        Assert.Equivalent(jobOffers, (List<JobOffer>)result!.Value!);
     }
 }
