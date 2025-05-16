@@ -19,8 +19,6 @@ public class JobOfferValidations : AbstractValidator<JobOffer>
         RuleFor(x => x.SubmissionDate)
              .Must(date => date != default)
              .WithMessage("Submission date cannot be default value.");
-
-
     }
     
     private static bool SalaryRangeValidatr(SalaryRange salaryRange)
