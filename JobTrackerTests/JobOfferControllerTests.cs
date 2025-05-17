@@ -1,3 +1,4 @@
+using Bogus;
 using FluentValidation;
 using JobTracker.Controllers;
 using JobTracker.Entities;
@@ -62,6 +63,21 @@ public class JobOfferControllerTests
         await _jobsOfferRepository.Received(1).CreateJobOffer(Arg.Is<JobOffer>(i => i.Id == jobOffer[0].Id));
 
         Assert.Equal(200, result!.StatusCode);
+    }
+
+    [Fact]
+    public async void DeleteJobOfferReturnsNoContent()
+    {
+
+        var jobOffer = new DataGenerator().GenerateJobOffer(1);
+
+        var actionResult = await _controller.DeleteJobOffer(jobOffer[0].Id);
+
+        var result = actionResult as NoContentResult;
+
+        _jobsOfferRepository.Received(0);
+
+        Assert.Equal(204, result!.StatusCode);
     }
 
     //delete, update, post validacja, update validancja
