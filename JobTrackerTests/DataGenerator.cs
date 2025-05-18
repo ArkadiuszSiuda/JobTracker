@@ -25,8 +25,8 @@ public class DataGenerator
             });
     }
 
-    public List<JobOffer> GenerateJobOffer(int count)
+    public List<JobOffer> GenerateJobOffers(int count)
     {
-        return _jobOfferFaker.GenerateBetween(1, count);
+        return _jobOfferFaker.Generate(count);
     }
 }

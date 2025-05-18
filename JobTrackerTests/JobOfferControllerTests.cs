@@ -25,7 +25,7 @@ public class JobOfferControllerTests
     [Fact]
     public async void GetJobOffersReturnsCorrectNumberOfOffers()
     {
-        var jobOffers = new DataGenerator().GenerateJobOffer(5);
+        var jobOffers = new DataGenerator().GenerateJobOffers(5);
 
         _jobsOfferRepository.GetJobOffers().Returns(jobOffers);
 
@@ -39,7 +39,7 @@ public class JobOfferControllerTests
     [Fact]
     public async void GetJobOfferReturnsCorrectJobOffer()
     {
-        var jobOffer = new DataGenerator().GenerateJobOffer(1);
+        var jobOffer = new DataGenerator().GenerateJobOffers(1);
 
         _jobsOfferRepository.GetJobOffer(jobOffer[0].Id).Returns(jobOffer[0]);
 
@@ -54,7 +54,7 @@ public class JobOfferControllerTests
     public async void PostJobOffersReturnsCorrectNumberOfOffers()
     {
 
-        var jobOffer = new DataGenerator().GenerateJobOffer(1);
+        var jobOffer = new DataGenerator().GenerateJobOffers(1);
 
         var actionResult = await _controller.CreateJobOffer(jobOffer[0]);
 
@@ -66,10 +66,32 @@ public class JobOfferControllerTests
     }
 
     [Fact]
+    public async void UpdateJobOfferReturnsUpdatedJobOffer()
+    {
+        var jobOffer = new DataGenerator().GenerateJobOffers(2);
+
+        _jobsOfferRepository.GetJobOffer(jobOffer[0].Id).Returns(jobOffer[0]);
+
+        var actionResult = await _controller.GetJobOffer(jobOffer[0].Id);
+
+        var result = actionResult as OkObjectResult;
+
+        var jobOfferToUpdate = result.Value as JobOffer;
+        jobOfferToUpdate.CompanyName = "Updated Company Name";
+
+        await _controller.UpdateJobOffer(jobOfferToUpdate);
+
+        await _jobsOfferRepository.Received(1).UpdateJobOffer(Arg.Is<JobOffer>(c => c.CompanyName == jobOfferToUpdate.CompanyName));
+
+        Assert.Equal(200, result!.StatusCode);
+    }
+
+
+    [Fact]
     public async void DeleteJobOfferReturnsNoContent()
     {
 
-        var jobOffer = new DataGenerator().GenerateJobOffer(1);
+        var jobOffer = new DataGenerator().GenerateJobOffers(1);
 
         var actionResult = await _controller.DeleteJobOffer(jobOffer[0].Id);
 
@@ -80,5 +102,5 @@ public class JobOfferControllerTests
         Assert.Equal(204, result!.StatusCode);
     }
 
-    //delete, update, post validacja, update validancja
+    //post validacja, update validancja
 }
