@@ -101,6 +101,4 @@ public class JobOfferControllerTests
 
         Assert.Equal(204, result!.StatusCode);
     }
-
-    //post validacja, update validancja
 }
